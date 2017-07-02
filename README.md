@@ -13,32 +13,49 @@ $ npm install vue-async-methods
 ## Usage
 
 ```js
-const vueAsyncMethods = require('vue-async-methods');
+import AsyncMethods from 'vue-async-methods'
 
-vueAsyncMethods('unicorns');
-//=> 'unicorns & rainbows'
+Vue.use(AsyncMethods)
 ```
 
+Now you can define async methods on your vm:
 
-## API
+```js
+export default {
+	asyncMethods: {
+		fetchData() {
+			return ajax('http://example.com/data.json') //must return a promise
+		}
+	},
+}
+```
 
-### vueAsyncMethods(input, [options])
+And use the following helper variables in your view:
 
-#### input
+```html
+<button type="button" @click="fetchData">Load data</button>
+<div v-if="!fetchData.isCalled">Click button to load data</div>
+<div v-if="fetchData.isPending">Loading data...</div>
 
-Type: `string`
+<div v-if="fetchData.isResolved">
+	<div v-if="fetchData.resolvedWithSomething">
+		<ul>
+			<li v-for="item in fetchData.resolvedWith">
+ 				{{item.name}}
+			</li>
+		</ul>
+	</div>
+	<div v-if="fetchData.resolvedWithEmpty">
+		Empty list returned
+	</div>
+</div>
 
-Lorem ipsum.
-
-#### options
-
-##### foo
-
-Type: `boolean`<br>
-Default: `false`
-
-Lorem ipsum.
-
+<div v-if="fetchData.isRejected">
+	<div v-if="fetchData.rejectedWith">
+		Could not load data due to an error. Details: {{fetchData.rejectedWith.message}}
+	</div>
+</div>
+```
 
 ## License
 

@@ -1,52 +1,75 @@
 'use strict';
-module.exports = AsyncMethods = {
-  install(Vue, options) {
-    options = options || {}
+module.exports = {
+	install(Vue, options) {
+		options = options || {}
 
-    function wrapMethod(func, vm) {
-      function wrapped() {
-        var args = [].slice.call(arguments)
+		function isEmpty(val) {
+			if (Array.isArray(val)) {
+				return val.length === 0
+			} else if (typeof val === 'object') {
+				return Object.keys(val).length === 0
+			} else {
+				return false
+			}
+		}
 
-        wrapped.isCalled = true
-        wrapped.isPending = true
-        wrapped.isResolved = false
-        wrapped.isRejected = false
+		function wrapMethod(func, vm) {
+			function wrapped() {
+				var args = [].slice.call(arguments)
 
-        var result = func.apply(vm, args)
+				wrapped.isCalled = true
+				wrapped.isPending = true
+				wrapped.isResolved = false
+				wrapped.isRejected = false
+				wrapped.resolvedWith = null
+				wrapped.resolvedWithSomething = false
+				wrapped.resolvedWithEmpty = false
+				wrapped.rejectedWith = null
 
-        if (result && result.then) {
-          result.then(function(res) {
-            wrapped.isPending = false
-            wrapped.isResolved = true
+				var result = func.apply(vm, args)
 
-            return res
-          }).catch(function(err) {
-            wrapped.isPending = false
-            wrapped.isRejected = true
+				if (result && result.then) {
+					return result.then(function(res) {
+						wrapped.isPending = false
+						wrapped.isResolved = true
+						wrapped.resolvedWith = res
 
-            throw err
-          })
+						var empty = isEmpty(res)
+						wrapped.resolvedWithEmpty = empty
+						wrapped.resolvedWithSomething = !empty
+						vm.$forceUpdate()
+						return res
+					}).catch(function(err) {
+						wrapped.isPending = false
+						wrapped.isRejected = true
+						wrapped.rejectedWith = err
+						vm.$forceUpdate()
 
-          return result
-        } else {
-          return result
-        }
-      }
+						throw err
+					})
+				} else {
+					return result
+				}
+			}
 
-      wrapped.isCalled = false
-      wrapped.isPending = false
-      wrapped.isResolved = false
-      wrapped.isRejected = false
+			wrapped.isCalled = false
+			wrapped.isPending = false
+			wrapped.isResolved = false
+			wrapped.isRejected = false
+			wrapped.resolvedWith = null
+			wrapped.resolvedWithSomething = false
+			wrapped.resolvedWithEmpty = false
+			wrapped.rejectedWith = null
 
-      return wrapped
-    }
+			return wrapped
+		}
 
-    Vue.mixin({
-      beforeCreate() {
-        for (const key in this.$options.asyncMethods || {}) {
-          this[key] = wrapMethod(this.$options.asyncMethods[key], this)
-        }
-      }
-    })
-  }
+		Vue.mixin({
+			beforeCreate() {
+				for (const key in this.$options.asyncMethods || {}) {
+					this[key] = wrapMethod(this.$options.asyncMethods[key], this)
+				}
+			}
+		})
+	}
 }
