@@ -20,15 +20,27 @@ Now you can define async methods on your vm:
 
 ```javascript
 export default {
-    asyncMethods: {
-        fetchData() {
-            return ajax('http://example.com/data.json') //must return a promise
-        }
-    },
+  asyncMethods: {
+    fetchData() {
+      return ajax('http://example.com/data.json') //must return a promise
+    }
+  },
 }
 ```
 
 And use the following helper variables in your view:
+
+```js
+fetchData.isCalled // false until first called
+fetchData.isPending
+fetchData.isResolved
+fetchData.isRejected
+fetchData.resolvedWith
+fetchData.resolvedWithEmpty //empty means empty object or empty array
+fetchData.resolvedWithSomething //opposite of empty
+fetchData.rejectedWith //Error object
+```
+
 
 ```html
 <button type="button" @click="fetchData">Load data</button>
