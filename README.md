@@ -39,7 +39,7 @@ And use the following helper variables in your view:
     <div v-if="fetchData.resolvedWithSomething">
         <ul>
             <li v-for="item in fetchData.resolvedWith">
-                 {{item.name}}
+                {{item.name}}
             </li>
         </ul>
     </div>
