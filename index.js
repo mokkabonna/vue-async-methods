@@ -6,7 +6,7 @@ module.exports = {
     function isEmpty(val) {
       if (Array.isArray(val)) {
         return val.length === 0
-      } else if (typeof val === 'object') {
+      } else if (typeof val === 'object' && val !== null) {
         return Object.keys(val).length === 0
       } else {
         return false
