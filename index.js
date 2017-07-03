@@ -8,6 +8,8 @@ module.exports = {
         return val.length === 0
       } else if (typeof val === 'object' && val !== null) {
         return Object.keys(val).length === 0
+      } else if (val === null) {
+        return true
       } else {
         return false
       }
