@@ -31,6 +31,7 @@ export default {
 And use the following helper variables in your view:
 
 ```js
+fetchData.execute // executes the method
 fetchData.isCalled // false until first called
 fetchData.isPending
 fetchData.isResolved
@@ -43,7 +44,7 @@ fetchData.rejectedWith //Error object
 
 
 ```html
-<button type="button" @click="fetchData">Load data</button>
+<button type="button" @click="fetchData.execute">Load data</button>
 <div v-if="!fetchData.isCalled">Click button to load data</div>
 <div v-if="fetchData.isPending">Loading data...</div>
 
