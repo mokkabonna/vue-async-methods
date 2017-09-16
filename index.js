@@ -51,7 +51,7 @@ module.exports = {
           } else {
             return result
           }
-        } catch(err){
+        } catch(err) {
           vm[funcName].isPending = false
           vm[funcName].isRejected = true
           vm[funcName].rejectedWith = err
