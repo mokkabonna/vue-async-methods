@@ -49,12 +49,20 @@ module.exports = {
               throw err
             })
           } else {
-            return result
+            // always return a promise for consistency
+            return new Promise(function(resolve) {
+              resolve(result)
+            })
           }
         } catch(err) {
           vm[funcName].isPending = false
           vm[funcName].isRejected = true
           vm[funcName].rejectedWith = err
+          
+          // always return a promise for consistency
+          return new Promise(function(resolve, reject) {
+            reject(err)
+          })
         }
       }
 
