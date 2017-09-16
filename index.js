@@ -51,16 +51,20 @@ module.exports = {
           } else {
             // always return a promise for consistency
             return new Promise(function(resolve) {
+              var empty = isEmpty(result)
+              vm[funcName].resolvedWithEmpty = empty
+              vm[funcName].resolvedWithSomething = !empty
+              
               resolve(result)
             })
           }
         } catch(err) {
-          vm[funcName].isPending = false
-          vm[funcName].isRejected = true
-          vm[funcName].rejectedWith = err
-          
           // always return a promise for consistency
           return new Promise(function(resolve, reject) {
+            vm[funcName].isPending = false
+            vm[funcName].isRejected = true
+            vm[funcName].rejectedWith = err
+            
             reject(err)
           })
         }
