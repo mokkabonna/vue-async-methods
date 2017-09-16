@@ -15,37 +15,36 @@ module.exports = {
       }
     }
 
-    function wrapMethod(func, vm) {
+    function wrapMethod(func, vm, funcName) {
       function wrapped() {
         var args = [].slice.call(arguments)
 
-        wrapped.isCalled = true
-        wrapped.isPending = true
-        wrapped.isResolved = false
-        wrapped.isRejected = false
-        wrapped.resolvedWith = null
-        wrapped.resolvedWithSomething = false
-        wrapped.resolvedWithEmpty = false
-        wrapped.rejectedWith = null
+        vm[funcName].isCalled = true
+        vm[funcName].isPending = true
+        vm[funcName].isResolved = false
+        vm[funcName].isRejected = false
+        vm[funcName].resolvedWith = null
+        vm[funcName].resolvedWithSomething = false
+        vm[funcName].resolvedWithEmpty = false
+        vm[funcName].rejectedWith = null
 
         var result = func.apply(vm, args)
 
         if (result && result.then) {
           return result.then(function(res) {
-            wrapped.isPending = false
-            wrapped.isResolved = true
-            wrapped.resolvedWith = res
+            vm[funcName].isPending = false
+            vm[funcName].isResolved = true
+            vm[funcName].resolvedWith = res
 
             var empty = isEmpty(res)
-            wrapped.resolvedWithEmpty = empty
-            wrapped.resolvedWithSomething = !empty
-            vm.$forceUpdate()
-            return res
+            vm[funcName].resolvedWithEmpty = empty
+            vm[funcName].resolvedWithSomething = !empty
+
+						return res
           }).catch(function(err) {
-            wrapped.isPending = false
-            wrapped.isRejected = true
-            wrapped.rejectedWith = err
-            vm.$forceUpdate()
+            vm[funcName].isPending = false
+            vm[funcName].isRejected = true
+            vm[funcName].rejectedWith = err
 
             throw err
           })
@@ -54,22 +53,23 @@ module.exports = {
         }
       }
 
-      wrapped.isCalled = false
-      wrapped.isPending = false
-      wrapped.isResolved = false
-      wrapped.isRejected = false
-      wrapped.resolvedWith = null
-      wrapped.resolvedWithSomething = false
-      wrapped.resolvedWithEmpty = false
-      wrapped.rejectedWith = null
-
       return wrapped
     }
 
     Vue.mixin({
       beforeCreate() {
         for (const key in this.$options.asyncMethods || {}) {
-          this[key] = wrapMethod(this.$options.asyncMethods[key], this)
+          Vue.util.defineReactive(this, key, {
+            execute: wrapMethod(this.$options.asyncMethods[key], this, key),
+            isCalled: false,
+            isPending: false,
+            isResolved: false,
+            isRejected: false,
+            resolvedWith: null,
+            resolvedWithSomething: false,
+            resolvedWithEmpty: false,
+            rejectedWith: null,
+          })
         }
       }
     })
