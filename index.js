@@ -28,28 +28,33 @@ module.exports = {
         vm[funcName].resolvedWithEmpty = false
         vm[funcName].rejectedWith = null
 
-        var result = func.apply(vm, args)
+        try {
+          var result = func.apply(vm, args)
+          if (result && result.then) {
+            return result.then(function(res) {
+              vm[funcName].isPending = false
+              vm[funcName].isResolved = true
+              vm[funcName].resolvedWith = res
 
-        if (result && result.then) {
-          return result.then(function(res) {
-            vm[funcName].isPending = false
-            vm[funcName].isResolved = true
-            vm[funcName].resolvedWith = res
+              var empty = isEmpty(res)
+              vm[funcName].resolvedWithEmpty = empty
+              vm[funcName].resolvedWithSomething = !empty
 
-            var empty = isEmpty(res)
-            vm[funcName].resolvedWithEmpty = empty
-            vm[funcName].resolvedWithSomething = !empty
+              return res
+            }).catch(function(err) {
+              vm[funcName].isPending = false
+              vm[funcName].isRejected = true
+              vm[funcName].rejectedWith = err
 
-						return res
-          }).catch(function(err) {
-            vm[funcName].isPending = false
-            vm[funcName].isRejected = true
-            vm[funcName].rejectedWith = err
-
-            throw err
-          })
-        } else {
-          return result
+              throw err
+            })
+          } else {
+            return result
+          }
+        } catch(err){
+          vm[funcName].isPending = false
+          vm[funcName].isRejected = true
+          vm[funcName].rejectedWith = err
         }
       }
 
