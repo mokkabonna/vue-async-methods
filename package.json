@@ -1,30 +1,34 @@
 {
-	"name": "vue-async-methods",
-	"version": "0.1.0",
-	"description": "Vue async methods support",
-	"license": "MIT",
-	"repository": "mokkabonna/vue-async-methods",
-	"author": {
-		"name": "Martin Hansen",
-		"email": "martin@martinhansen.no",
-		"url": "martinhansen.com"
-	},
-	"engines": {
-		"node": ">=4"
-	},
-	"scripts": {
-		"test": "xo && nyc ava"
-	},
-	"files": [
-		"index.js"
-	],
-	"keywords": [
-		""
-	],
-	"dependencies": {},
-	"devDependencies": {
-		"ava": "^0.20.0",
-		"nyc": "^11.0.0",
-		"xo": "^0.18.2"
-	}
+  "name": "vue-async-methods",
+  "version": "0.1.0",
+  "description": "Vue async methods support",
+  "license": "MIT",
+  "repository": "mokkabonna/vue-async-methods",
+  "author": {
+    "name": "Martin Hansen",
+    "email": "martin@martinhansen.no",
+    "url": "martinhansen.com"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "test": "eslint ."
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    ""
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "ava": "^0.20.0",
+    "eslint": "^4.7.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-standard": "^3.0.1",
+    "nyc": "^11.0.0",
+    "xo": "^0.18.2"
+  }
 }

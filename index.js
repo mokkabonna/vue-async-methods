@@ -1,4 +1,5 @@
-'use strict';
+'use strict'
+
 module.exports = {
   install(Vue, options) {
     options = options || {}
@@ -54,17 +55,17 @@ module.exports = {
               var empty = isEmpty(result)
               vm[funcName].resolvedWithEmpty = empty
               vm[funcName].resolvedWithSomething = !empty
-              
+
               resolve(result)
             })
           }
-        } catch(err) {
+        } catch (err) {
           // always return a promise for consistency
           return new Promise(function(resolve, reject) {
             vm[funcName].isPending = false
             vm[funcName].isRejected = true
             vm[funcName].rejectedWith = err
-            
+
             reject(err)
           })
         }
@@ -85,7 +86,7 @@ module.exports = {
             resolvedWith: null,
             resolvedWithSomething: false,
             resolvedWithEmpty: false,
-            rejectedWith: null,
+            rejectedWith: null
           })
         }
       }
