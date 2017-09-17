@@ -1,58 +1,75 @@
-/* global describe, it */
+/* global describe, it, beforeEach */
 var expect = require('chai').expect
 var Vue = require('vue')
 var asyncMethods = require('./index')
-var resolve
-var reject
+var resolvePromise
 
 function fetch() {
-  return new Promise(function(res, rej) {
-    resolve = res
-    reject = rej
+  return new Promise(function(resolve) {
+    resolvePromise = resolve
   })
 }
 
 describe('vue-async-methods', function() {
   var vm
   beforeEach(function() {
-  	Vue.use(asyncMethods)
-  	vm = new Vue({
-  	  asyncMethods: {
-  	  	fetch: fetch
-  	  }
-  	})
+    Vue.use(asyncMethods)
+    vm = new Vue({
+      asyncMethods: {
+        fetch: fetch
+      }
+    })
   })
-  
+
   it('creates the method object on the vm', function() {
-  	expect(vm.fetch.execute).to.be.a('function')
+    expect(vm.fetch.execute).to.be.a('function')
   })
-  
+
   it('exposes the initial state', function() {
-  	expect(vm.fetch.isCalled).to.equal(false)
-  	expect(vm.fetch.isPending).to.equal(false)
-  	expect(vm.fetch.isResolved).to.equal(false)
-  	expect(vm.fetch.isRejected).to.equal(false)
-  	expect(vm.fetch.resolvedWith).to.equal(null)
-  	expect(vm.fetch.resolvedWithSomething).to.equal(false)
-  	expect(vm.fetch.resolvedWithEmpty).to.equal(false)
-  	expect(vm.fetch.rejectedWith).to.equal(null)
+    expect(vm.fetch.isCalled).to.equal(false)
+    expect(vm.fetch.isPending).to.equal(false)
+    expect(vm.fetch.isResolved).to.equal(false)
+    expect(vm.fetch.isRejected).to.equal(false)
+    expect(vm.fetch.resolvedWith).to.equal(null)
+    expect(vm.fetch.resolvedWithSomething).to.equal(false)
+    expect(vm.fetch.resolvedWithEmpty).to.equal(false)
+    expect(vm.fetch.rejectedWith).to.equal(null)
   })
-  
+
   describe('after called', function() {
-  	var call
-  	beforeEach(function() {
-  	  call = vm.fetch.execute()
-  	})
-  	
-  	it('is called', function() {
-  	  expect(vm.fetch.isCalled).to.equal(true)
-    	expect(vm.fetch.isPending).to.equal(true)
-    	expect(vm.fetch.isResolved).to.equal(false)
-    	expect(vm.fetch.isRejected).to.equal(false)
-    	expect(vm.fetch.resolvedWith).to.equal(null)
-    	expect(vm.fetch.resolvedWithSomething).to.equal(false)
-    	expect(vm.fetch.resolvedWithEmpty).to.equal(false)
-    	expect(vm.fetch.rejectedWith).to.equal(null)
-  	})
+    var call
+    beforeEach(function() {
+      call = vm.fetch.execute()
+    })
+
+    it('is called', function() {
+      expect(vm.fetch.isCalled).to.equal(true)
+      expect(vm.fetch.isPending).to.equal(true)
+      expect(vm.fetch.isResolved).to.equal(false)
+      expect(vm.fetch.isRejected).to.equal(false)
+      expect(vm.fetch.resolvedWith).to.equal(null)
+      expect(vm.fetch.resolvedWithSomething).to.equal(false)
+      expect(vm.fetch.resolvedWithEmpty).to.equal(false)
+      expect(vm.fetch.rejectedWith).to.equal(null)
+    })
+
+    describe('when resolve', function() {
+      var resolveResult = {}
+      beforeEach(function() {
+        resolvePromise(resolveResult)
+        return call
+      })
+
+      it('reclects status', function() {
+        expect(vm.fetch.isCalled).to.equal(true)
+        expect(vm.fetch.isPending).to.equal(false)
+        expect(vm.fetch.isResolved).to.equal(true)
+        expect(vm.fetch.isRejected).to.equal(false)
+        expect(vm.fetch.resolvedWith).to.equal(resolveResult)
+        expect(vm.fetch.resolvedWithSomething).to.equal(false)
+        expect(vm.fetch.resolvedWithEmpty).to.equal(true)
+        expect(vm.fetch.rejectedWith).to.equal(null)
+      })
+    })
   })
 })
