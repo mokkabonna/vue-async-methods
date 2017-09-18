@@ -52,7 +52,7 @@ module.exports = {
               vm[funcName].rejectedWith = err
 
               if (isFunction(options.onError)) {
-                options.onError(err)
+                options.onError(err, vm, funcName, args)
               } else {
                 throw err
               }
@@ -75,7 +75,7 @@ module.exports = {
             vm[funcName].rejectedWith = err
 
             if (isFunction(options.onError)) {
-              options.onError(err)
+              options.onError(err, vm, funcName, args)
             } else {
               reject(err)
             }
