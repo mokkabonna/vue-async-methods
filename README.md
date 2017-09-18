@@ -45,7 +45,7 @@ Now you can define async methods on your vm:
 export default {
   asyncMethods: {
     fetchArticles() {
-      return ajax('http://example.com/data.json') //must return a promise
+      return ajax('http://example.com/data.json')
     }
   },
 }
