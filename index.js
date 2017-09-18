@@ -16,6 +16,10 @@ module.exports = {
       }
     }
 
+    function isFunction(func) {
+      return typeof func === 'function'
+    }
+
     function wrapMethod(func, vm, funcName) {
       function wrapped() {
         var args = [].slice.call(arguments)
@@ -47,7 +51,11 @@ module.exports = {
               vm[funcName].isRejected = true
               vm[funcName].rejectedWith = err
 
-              throw err
+              if (isFunction(options.onError)) {
+                options.onError(err)
+              } else {
+                throw err
+              }
             })
           } else {
             // always return a promise for consistency
@@ -66,7 +74,11 @@ module.exports = {
             vm[funcName].isRejected = true
             vm[funcName].rejectedWith = err
 
-            reject(err)
+            if (isFunction(options.onError)) {
+              options.onError(err)
+            } else {
+              reject(err)
+            }
           })
         }
       }
