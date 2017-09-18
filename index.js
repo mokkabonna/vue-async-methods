@@ -63,9 +63,9 @@ module.exports = {
 
               if (isFunction(options.onError)) {
                 options.onError(err, vm, funcName, args)
-              } else {
-                throw err
               }
+
+              throw err
             })
 
             return vm[funcName].promise
@@ -90,9 +90,9 @@ module.exports = {
 
             if (isFunction(options.onError)) {
               options.onError(err, vm, funcName, args)
-            } else {
-              reject(err)
             }
+
+            reject(err)
           })
 
           return vm[funcName].promise
@@ -103,7 +103,12 @@ module.exports = {
     }
 
     Vue.component('catch-async-error', {
-      props: ['promise'],
+      props: {
+        method: {
+          type: Object,
+          required: true
+        }
+      },
       render: function(h) {
         if (!this.error || !this.$slots || !this.$slots.default) return null
 
@@ -123,20 +128,19 @@ module.exports = {
         }
       },
       created() {
-        if (this.promise) {
+        if (this.method.promise) {
           this.catchError()
         }
       },
       watch: {
-        promise: 'catchError'
+        'method.promise': 'catchError'
       },
       methods: {
         catchError() {
           this.error = null
 
-          this.promise.catch((err) => {
+          this.method.promise.catch((err) => {
             this.error = err
-            this.showError = true
           })
         }
       }

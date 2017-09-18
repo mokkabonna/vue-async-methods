@@ -62,6 +62,8 @@ fetchArticles.resolvedWithSomething //opposite of empty
 fetchArticles.rejectedWith //Error object
 ```
 
+It also registers a component called `catch-async-error` that enables you to catch errors in the view instead of in the code.
+
 
 ```html
 <button type="button" @click="fetchArticles.execute">Load data</button>
@@ -81,11 +83,11 @@ fetchArticles.rejectedWith //Error object
     </div>
 </div>
 
-<div v-if="fetchArticles.isRejected">
+<catch-async-error :method="fetchArticles">
     <div v-if="fetchArticles.rejectedWith">
         Could not load data due to an error. Details: {{fetchData.rejectedWith.message}}
     </div>
-</div>
+</catch-async-error>
 ```
 
 ## License
