@@ -36,7 +36,7 @@ module.exports = {
         try {
           var result = func.apply(vm, args)
           if (result && result.then) {
-            return result.then(function(res) {
+            return vm[funcName].promise = result.then(function(res) {
               vm[funcName].isPending = false
               vm[funcName].isResolved = true
               vm[funcName].resolvedWith = res
@@ -50,7 +50,7 @@ module.exports = {
               vm[funcName].isPending = false
               vm[funcName].isRejected = true
               vm[funcName].rejectedWith = err
-
+              
               if (isFunction(options.onError)) {
                 options.onError(err, vm, funcName, args)
               } else {
@@ -59,7 +59,7 @@ module.exports = {
             })
           } else {
             // always return a promise for consistency
-            return new Promise(function(resolve) {
+            return vm[funcName].promise = new Promise(function(resolve) {
               var empty = isEmpty(result)
               vm[funcName].resolvedWithEmpty = empty
               vm[funcName].resolvedWithSomething = !empty
@@ -69,7 +69,7 @@ module.exports = {
           }
         } catch (err) {
           // always return a promise for consistency
-          return new Promise(function(resolve, reject) {
+          return vm[funcName].promise = new Promise(function(resolve, reject) {
             vm[funcName].isPending = false
             vm[funcName].isRejected = true
             vm[funcName].rejectedWith = err
@@ -91,6 +91,7 @@ module.exports = {
         for (const key in this.$options.asyncMethods || {}) {
           Vue.util.defineReactive(this, key, {
             execute: wrapMethod(this.$options.asyncMethods[key], this, key),
+            promise: null,
             isCalled: false,
             isPending: false,
             isResolved: false,
