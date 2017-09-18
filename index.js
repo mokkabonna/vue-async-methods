@@ -111,7 +111,7 @@ module.exports = {
             this.$options.computed = this.$options.computed || {}
             var computedName = options.getComputedName(this, key)
             if (!computedName || !computedName.length){
-              throw new Error('computed name for method ' + key + ' is empty, return a non zero length string')
+              throw new Error('Computed name for method ' + key + ' is empty, return a non zero length string')
             }
             this.$options.computed[computedName] = () => {
               return this[key].resolvedWith
