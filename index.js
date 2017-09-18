@@ -1,11 +1,10 @@
 'use strict'
 
-var blockRegex = /^(address|blockquote|body|center|dir|div|dl|fieldset|form|h[1-6]|hr|isindex|menu|noframes|noscript|ol|p|pre|table|ul|dd|dt|frameset|li|tbody|td|tfoot|th|thead|tr|html)$/i;
+var blockRegex = /^(address|blockquote|body|center|dir|div|dl|fieldset|form|h[1-6]|hr|isindex|menu|noframes|noscript|ol|p|pre|table|ul|dd|dt|frameset|li|tbody|td|tfoot|th|thead|tr|html)$/i
 
 function isBlockLevel(name) {
-  return blockRegex.test(name);
+  return blockRegex.test(name)
 }
-
 
 module.exports = {
   install(Vue, options) {
@@ -105,17 +104,17 @@ module.exports = {
 
     Vue.component('catch-async-error', {
       props: ['promise'],
-      render: function(h){
-        if(!this.error || !this.$slots || !this.$slots.default) return null
+      render: function(h) {
+        if (!this.error || !this.$slots || !this.$slots.default) return null
 
-        if(this.$slots.default.length === 1) {
+        if (this.$slots.default.length === 1) {
           return this.$slots.default[0]
         }
 
-        var isAnyBlock = this.$slots.default.some(function(vNode){
+        var isAnyBlock = this.$slots.default.some(function(vNode) {
           return isBlockLevel(vNode.tag)
         })
-        var baseElement = isAnyBlock ?  'div' : 'span'
+        var baseElement = isAnyBlock ? 'div' : 'span'
         return h(baseElement, this.$slots.default)
       },
       data() {
@@ -124,7 +123,7 @@ module.exports = {
         }
       },
       created() {
-        if(this.promise){
+        if (this.promise) {
           this.catchError()
         }
       },
@@ -132,7 +131,7 @@ module.exports = {
         promise: 'catchError'
       },
       methods: {
-        catchError(){
+        catchError() {
           this.error = null
 
           this.promise.catch((err) => {
