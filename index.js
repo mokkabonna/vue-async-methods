@@ -3,6 +3,10 @@
 module.exports = {
   install(Vue, options) {
     options = options || {}
+    options.getComputedName = options.getComputedName || function (vm, funcName) {
+      var withoutPrefix = funcName.replace(/^(fetch|get|load)/, '')
+      return withoutPrefix.slice(0, 1).toLowerCase() + withoutPrefix.slice(1)
+    }
 
     function isEmpty(val) {
       if (Array.isArray(val)) {
@@ -101,6 +105,18 @@ module.exports = {
             resolvedWithEmpty: false,
             rejectedWith: null
           })
+
+          // add computed
+          if (options.createComputed) {
+            this.$options.computed = this.$options.computed || {}
+            var computedName = options.getComputedName(this, key)
+            if (!computedName.length){
+              throw new Error('computed name for method ' + key + ' is empty, return a non zero length string')
+            }
+            this.$options.computed[computedName] = () => {
+              return this[key].resolvedWith
+            }
+          }
         }
       }
     })

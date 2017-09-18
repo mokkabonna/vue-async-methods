@@ -2,6 +2,7 @@
 var expect = require('chai').expect
 var sinon = require('sinon')
 var decache = require('decache')
+var _ = require('lodash')
 var asyncMethods = require('./index')
 var resolvePromise
 var rejectPromise
@@ -16,32 +17,63 @@ function fetch() {
 describe('vue-async-methods custom options', function() {
   var vm
   var onError
+  var Vue
   beforeEach(function() {
     decache('vue')
-    var Vue = require('vue')
+    Vue = require('vue')
     onError = sinon.stub()
     Vue.use(asyncMethods, {
+      createComputed: true,
       onError: onError
     })
-    
+
     vm = new Vue({
       asyncMethods: {
-        fetch: fetch
+        fetchArticle: fetch
       }
+    })
+  })
+
+  it('creates computeds based on prefix', function() {
+    expect(vm.article).to.equal(null)
+  })
+
+  it('does not create computed if only prefix', function() {
+    function create() {
+      new Vue({
+        asyncMethods: {
+          fetch: fetch
+        }
+      })  
+    }
+
+    expect(create).to.throw(/computed name for method fetch is empty/)
+  })
+
+  describe('when it succeds', function() {
+    var article = {}
+    beforeEach(function() {
+      var call = vm.fetchArticle.execute()
+      resolvePromise(article)    
+      return call
+    })
+    
+    it('updates the computed', function() {
+      expect(vm.article).to.equal(article)
     })
   })
   
   describe('when it fail', function() {
     var error = new Error('fail')
     beforeEach(function() {
-      var call = vm.fetch.execute(1, 2, 3)
+      var call = vm.fetchArticle.execute(1, 2, 3)
       rejectPromise(error)
       return call.catch(function () {})
     })
     
     it('calls the global error handler', function() {
       sinon.assert.calledOnce(onError)
-      sinon.assert.calledWithMatch(onError, error, sinon.match.object, 'fetch', [1, 2, 3])
+      sinon.assert.calledWithMatch(onError, error, sinon.match.object, 'fetchArticle', [1, 2, 3])
     })
   })
 
