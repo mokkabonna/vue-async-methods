@@ -40,7 +40,7 @@ module.exports = {
         try {
           var result = func.apply(vm, args)
           if (result && result.then) {
-            return vm[funcName].promise = result.then(function(res) {
+            vm[funcName].promise = result.then(function(res) {
               vm[funcName].isPending = false
               vm[funcName].isResolved = true
               vm[funcName].resolvedWith = res
@@ -54,26 +54,30 @@ module.exports = {
               vm[funcName].isPending = false
               vm[funcName].isRejected = true
               vm[funcName].rejectedWith = err
-              
+
               if (isFunction(options.onError)) {
                 options.onError(err, vm, funcName, args)
               } else {
                 throw err
               }
             })
+
+            return vm[funcName].promise
           } else {
             // always return a promise for consistency
-            return vm[funcName].promise = new Promise(function(resolve) {
+            vm[funcName].promise = new Promise(function(resolve) {
               var empty = isEmpty(result)
               vm[funcName].resolvedWithEmpty = empty
               vm[funcName].resolvedWithSomething = !empty
 
               resolve(result)
             })
+
+            return vm[funcName].promise
           }
         } catch (err) {
           // always return a promise for consistency
-          return vm[funcName].promise = new Promise(function(resolve, reject) {
+          vm[funcName].promise = new Promise(function(resolve, reject) {
             vm[funcName].isPending = false
             vm[funcName].isRejected = true
             vm[funcName].rejectedWith = err
@@ -84,6 +88,8 @@ module.exports = {
               reject(err)
             }
           })
+
+          return vm[funcName].promise
         }
       }
 
@@ -110,9 +116,11 @@ module.exports = {
           if (options.createComputed) {
             this.$options.computed = this.$options.computed || {}
             var computedName = options.getComputedName(this, key)
-            if (!computedName || !computedName.length){
+
+            if (!computedName || !computedName.length) {
               throw new Error('Computed name for method ' + key + ' is empty, return a non zero length string')
             }
+
             this.$options.computed[computedName] = () => {
               return this[key].resolvedWith
             }
