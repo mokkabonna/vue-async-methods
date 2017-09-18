@@ -72,7 +72,7 @@ describe('vue-async-methods custom options', function() {
 
     it('calls the global error handler', function() {
       sinon.assert.calledOnce(onError)
-      sinon.assert.calledWithMatch(onError, error, sinon.match.object, 'fetchArticle', [1, 2, 3])
+      sinon.assert.calledWithMatch(onError, error, false, sinon.match.object, 'fetchArticle', [1, 2, 3])
     })
   })
 })

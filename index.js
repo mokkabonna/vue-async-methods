@@ -62,7 +62,7 @@ module.exports = {
               vm[funcName].rejectedWith = err
 
               if (isFunction(options.onError)) {
-                options.onError(err, vm, funcName, args)
+                options.onError(err, vm[funcName].handleErrorInView, vm, funcName, args)
               }
 
               throw err
@@ -89,7 +89,7 @@ module.exports = {
             vm[funcName].rejectedWith = err
 
             if (isFunction(options.onError)) {
-              options.onError(err, vm, funcName, args)
+              options.onError(err, vm[funcName].handleErrorInView, vm, funcName, args)
             }
 
             reject(err)
@@ -159,7 +159,8 @@ module.exports = {
             resolvedWith: null,
             resolvedWithSomething: false,
             resolvedWithEmpty: false,
-            rejectedWith: null
+            rejectedWith: null,
+            handleErrorInView: false
           })
 
           // add computed
