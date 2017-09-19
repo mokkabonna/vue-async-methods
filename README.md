@@ -4,6 +4,8 @@
 
 Gives you utility methods for your promise based methods for use in the view. Also catch errors in the view.
 
+[Demo](https://jsfiddle.net/nyz4ahys/4/)
+
 ## Install
 
 ```
