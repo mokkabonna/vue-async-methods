@@ -93,7 +93,7 @@ It also registers a component called `catch-async-error` that enables you to cat
 
 <catch-async-error :method="fetchArticles">
     <div v-if="fetchArticles.rejectedWith">
-        Could not load articles due to an error. Details: {{fetchData.rejectedWith.message}}
+        Could not load articles due to an error. Details: {{fetchArticles.rejectedWith.message}}
     </div>
 </catch-async-error>
 ```
