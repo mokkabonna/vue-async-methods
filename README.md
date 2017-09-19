@@ -38,6 +38,8 @@ function (vm, methodName) {
 
 #### onError(err, handledInView, vm, methodName, args)
 
+default `null`
+
 All error raised by the methods will be passed to the onError handler, enabling you to implement
 global error handling, logging, etc.
 
