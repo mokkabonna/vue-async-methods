@@ -153,7 +153,7 @@ module.exports = {
       beforeCreate: function() {
         var self = this
         
-        for (const key in this.$options.asyncMethods || {}) {
+        for (var key in this.$options.asyncMethods || {}) {
           Vue.util.defineReactive(this, key, {
             execute: wrapMethod(this.$options.asyncMethods[key], this, key),
             promise: null,
