@@ -129,7 +129,7 @@ module.exports = {
       },
       created: function() {
         this.method.handleErrorInView = true
-        
+
         if (this.method.promise) {
           this.catchError()
         }
@@ -142,7 +142,7 @@ module.exports = {
           var self = this
           this.error = null
 
-          this.method.promise.catch(function() {
+          this.method.promise.catch(function(err) {
             self.error = err
           })
         }
@@ -152,7 +152,7 @@ module.exports = {
     Vue.mixin({
       beforeCreate: function() {
         var self = this
-        
+
         for (var key in this.$options.asyncMethods || {}) {
           Vue.util.defineReactive(this, key, {
             execute: wrapMethod(this.$options.asyncMethods[key], this, key),
