@@ -7,7 +7,7 @@ function isBlockLevel(name) {
 }
 
 module.exports = {
-  install(Vue, options) {
+  install: function(Vue, options) {
     options = options || {}
     options.getComputedName = options.getComputedName || function (vm, funcName) {
       var withoutPrefix = funcName.replace(/^(fetch|get|load)/, '')
@@ -122,12 +122,12 @@ module.exports = {
         var baseElement = isAnyBlock ? 'div' : 'span'
         return h(baseElement, this.$slots.default)
       },
-      data() {
+      data: function() {
         return {
           error: null
         }
       },
-      created() {
+      created: function() {
         this.method.handleErrorInView = true
         
         if (this.method.promise) {
@@ -138,7 +138,7 @@ module.exports = {
         'method.promise': 'catchError'
       },
       methods: {
-        catchError() {
+        catchError: function() {
           this.error = null
 
           this.method.promise.catch((err) => {
@@ -149,7 +149,7 @@ module.exports = {
     })
 
     Vue.mixin({
-      beforeCreate() {
+      beforeCreate: function() {
         for (const key in this.$options.asyncMethods || {}) {
           Vue.util.defineReactive(this, key, {
             execute: wrapMethod(this.$options.asyncMethods[key], this, key),
