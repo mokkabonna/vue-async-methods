@@ -128,6 +128,8 @@ module.exports = {
         }
       },
       created() {
+        this.method.handleErrorInView = true
+        
         if (this.method.promise) {
           this.catchError()
         }
