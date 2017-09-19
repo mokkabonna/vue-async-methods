@@ -20,7 +20,7 @@ Vue.use(AsyncMethods [,options])
 
 #### createComputed 
 
-default `false`, if true: creates computeds that proxies fetchArticles.resolvedWith
+default `false`, if true: creates computeds that proxies `fetchArticles.resolvedWith`
 
 #### getComputedName(vm, methodName)
 
