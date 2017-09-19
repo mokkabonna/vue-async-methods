@@ -75,22 +75,19 @@ It also registers a component called `catch-async-error` that enables you to cat
 <div v-if="!fetchArticles.isCalled">Click button to load data</div>
 <div v-if="fetchArticles.isPending">Loading data...</div>
 
-<div v-if="fetchArticles.isResolved">
-    <div v-if="fetchArticles.resolvedWithSomething">
-        <ul>
-            <li v-for="article in articles">
-                {{article.name}}
-            </li>
-        </ul>
-    </div>
-    <div v-if="fetchArticles.resolvedWithEmpty">
-        Empty list returned
-    </div>
+<ul v-if="fetchArticles.resolvedWithSomething">
+    <li v-for="article in articles">
+        {{article.name}}
+    </li>
+</ul>
+    
+<div v-if="fetchArticles.resolvedWithEmpty">
+    There are no articles.
 </div>
 
 <catch-async-error :method="fetchArticles">
     <div v-if="fetchArticles.rejectedWith">
-        Could not load data due to an error. Details: {{fetchData.rejectedWith.message}}
+        Could not load articles due to an error. Details: {{fetchData.rejectedWith.message}}
     </div>
 </catch-async-error>
 ```
