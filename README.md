@@ -2,6 +2,8 @@
 
 > Vue async methods support
 
+Gives you utility methods for your promise based methods for use in the view. Also catch errors in the view.
+
 ## Install
 
 ```
