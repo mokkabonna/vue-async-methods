@@ -139,10 +139,11 @@ module.exports = {
       },
       methods: {
         catchError: function() {
+          var self = this
           this.error = null
 
-          this.method.promise.catch((err) => {
-            this.error = err
+          this.method.promise.catch(function() {
+            self.error = err
           })
         }
       }
@@ -150,6 +151,8 @@ module.exports = {
 
     Vue.mixin({
       beforeCreate: function() {
+        var self = this
+        
         for (const key in this.$options.asyncMethods || {}) {
           Vue.util.defineReactive(this, key, {
             execute: wrapMethod(this.$options.asyncMethods[key], this, key),
@@ -174,8 +177,8 @@ module.exports = {
               throw new Error('Computed name for method ' + key + ' is empty, return a non zero length string')
             }
 
-            this.$options.computed[computedName] = () => {
-              return this[key].resolvedWith
+            this.$options.computed[computedName] = function() {
+              return self[key].resolvedWith
             }
           }
         }
