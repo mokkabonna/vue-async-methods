@@ -92,6 +92,10 @@ It also registers a component called `catch-async-error` that enables you to cat
 </catch-async-error>
 ```
 
+## Contributing
+
+Create tests for new functionality and follow the eslint rules.
+
 ## License
 
 MIT © [Martin Hansen](http://martinhansen.com)
