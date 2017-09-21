@@ -24,14 +24,15 @@ Vue.use(AsyncMethods [,options])
 
 #### createComputed 
 
-default `false`, if true: creates computeds that proxies `fetchArticles.resolvedWith`
+default `false`, if true: creates computeds that proxies `fetchArticles.resolvedWith` to `articles`
 
 #### getComputedName(vm, methodName)
 
 A function that should return the name of the desired computed if createComputed is `true`
-default
+
+default:
 ```js
-// turns "fetchArticles", "getArticle" or "loadArticle" into "article" computed
+// turns "fetchArticles", "getArticles" or "loadArticles" into "articles" computed
 function (vm, methodName) {
   var withoutPrefix = methodName.replace(/^(fetch|get|load)/, '')
   return withoutPrefix.slice(0, 1).toLowerCase() + withoutPrefix.slice(1)
@@ -40,7 +41,7 @@ function (vm, methodName) {
 
 #### onError(err, handledInView, vm, methodName, args)
 
-default `null`
+default: `null`
 
 All error raised by the methods will be passed to the onError handler, enabling you to implement
 global error handling, logging, etc.
