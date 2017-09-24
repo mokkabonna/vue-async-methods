@@ -6,28 +6,28 @@ function isBlockLevel(name) {
   return blockRegex.test(name)
 }
 
+function isEmpty(val) {
+  if (Array.isArray(val)) {
+    return val.length === 0
+  } else if (typeof val === 'object' && val !== null) {
+    return Object.keys(val).length === 0
+  } else if (val === null) {
+    return true
+  } else {
+    return false
+  }
+}
+
+function isFunction(func) {
+  return typeof func === 'function'
+}
+
 module.exports = {
   install: function(Vue, options) {
     options = options || {}
     options.getComputedName = options.getComputedName || function (vm, funcName) {
       var withoutPrefix = funcName.replace(/^(fetch|get|load)/, '')
       return withoutPrefix.slice(0, 1).toLowerCase() + withoutPrefix.slice(1)
-    }
-
-    function isEmpty(val) {
-      if (Array.isArray(val)) {
-        return val.length === 0
-      } else if (typeof val === 'object' && val !== null) {
-        return Object.keys(val).length === 0
-      } else if (val === null) {
-        return true
-      } else {
-        return false
-      }
-    }
-
-    function isFunction(func) {
-      return typeof func === 'function'
     }
 
     function wrapMethod(func, vm, funcName) {
