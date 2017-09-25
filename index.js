@@ -22,6 +22,12 @@ function isFunction(func) {
   return typeof func === 'function'
 }
 
+function createComputed(self, key) {
+  return function() {
+    return self[key].resolvedWith
+  }
+}
+
 module.exports = {
   install: function(Vue, options) {
     options = options || {}
@@ -177,9 +183,7 @@ module.exports = {
               throw new Error('Computed name for method ' + key + ' is empty, return a non zero length string')
             }
 
-            this.$options.computed[computedName] = function() {
-              return self[key].resolvedWith
-            }
+            this.$options.computed[computedName] = createComputed(self, key)
           }
         }
       }
