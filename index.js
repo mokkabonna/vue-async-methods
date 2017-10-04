@@ -31,7 +31,7 @@ function createComputed(self, key) {
 module.exports = {
   install: function(Vue, options) {
     options = options || {}
-    options.getComputedName = options.getComputedName || function (vm, funcName) {
+    options.getComputedName = options.getComputedName || function(vm, funcName) {
       var withoutPrefix = funcName.replace(/^(fetch|get|load)/, '')
       return withoutPrefix.slice(0, 1).toLowerCase() + withoutPrefix.slice(1)
     }
@@ -155,13 +155,16 @@ module.exports = {
       }
     })
 
+    Vue.config.optionMergeStrategies.asyncMethods = Vue.config.optionMergeStrategies.methods
+
     Vue.mixin({
       beforeCreate: function() {
         var self = this
+        var asyncMethods = this.$options.asyncMethods || {}
 
-        for (var key in this.$options.asyncMethods || {}) {
+        for (var key in asyncMethods) {
           Vue.util.defineReactive(this, key, {
-            execute: wrapMethod(this.$options.asyncMethods[key], this, key),
+            execute: wrapMethod(asyncMethods[key], this, key),
             promise: null,
             isCalled: false,
             isPending: false,
