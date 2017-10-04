@@ -1,6 +1,6 @@
 {
   "name": "vue-async-methods",
-  "version": "0.7.4",
+  "version": "0.8.0",
   "description": "Vue async methods support",
   "license": "MIT",
   "repository": "mokkabonna/vue-async-methods",
