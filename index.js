@@ -11,7 +11,7 @@ function isEmpty(val) {
     return val.length === 0
   } else if (typeof val === 'object' && val !== null) {
     return Object.keys(val).length === 0
-  } else if (val === null) {
+  } else if (val === null || val === undefined) {
     return true
   } else {
     return false
@@ -78,6 +78,10 @@ module.exports = {
           } else {
             // always return a promise for consistency
             vm[funcName].promise = new Promise(function(resolve) {
+              vm[funcName].isPending = false
+              vm[funcName].isResolved = true
+              vm[funcName].resolvedWith = result
+
               var empty = isEmpty(result)
               vm[funcName].resolvedWithEmpty = empty
               vm[funcName].resolvedWithSomething = !empty
