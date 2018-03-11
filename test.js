@@ -48,7 +48,7 @@ describe('vue-async-methods custom options', function() {
 
     expect(create).to.throw(/Computed name for method fetch is empty/)
   })
-  
+
   describe('direct call', function() {
     var article = {}
     beforeEach(function() {

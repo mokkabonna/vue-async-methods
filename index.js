@@ -168,9 +168,9 @@ module.exports = {
 
         for (var key in asyncMethods) {
           var func = wrapMethod(asyncMethods[key], this, key)
-          
+
           Vue.util.defineReactive(this, key, func)
-          
+
           var extra = {
             execute: func,
             promise: null,
@@ -184,7 +184,7 @@ module.exports = {
             rejectedWith: null,
             handleErrorInView: false
           }
-          
+
           for (var prop in extra) {
             Vue.util.defineReactive(func, prop, extra[prop])
           }
