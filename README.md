@@ -62,7 +62,8 @@ And use the following helper variables in your view:
 
 ```js
 articles // this is a computed that aliases fetchArticles.resolvedWith
-fetchArticles.execute // executes the method
+fetchArticles //call this function to fetch the articles
+fetchArticles.execute // executes the method, legacy support
 fetchArticles.promise // the current or last promise
 fetchArticles.isCalled // false until first called
 fetchArticles.isPending
@@ -78,7 +79,7 @@ It also registers a component called `catch-async-error` that enables you to cat
 
 
 ```html
-<button type="button" @click="fetchArticles.execute">Load data</button>
+<button type="button" @click="fetchArticles">Load data</button>
 <div v-if="!fetchArticles.isCalled">Click button to load data</div>
 <div v-if="fetchArticles.isPending">Loading data...</div>
 
