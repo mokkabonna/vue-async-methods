@@ -166,8 +166,12 @@ module.exports = {
         var asyncMethods = this.$options.asyncMethods || {}
 
         for (var key in asyncMethods) {
-          Vue.util.defineReactive(this, key, {
-            execute: wrapMethod(asyncMethods[key], this, key),
+          var func = wrapMethod(asyncMethods[key], this, key)
+
+          Vue.util.defineReactive(this, key, func)
+
+          var extra = {
+            execute: func,
             promise: null,
             isCalled: false,
             isPending: false,
@@ -178,7 +182,11 @@ module.exports = {
             resolvedWithEmpty: false,
             rejectedWith: null,
             handleErrorInView: false
-          })
+          }
+
+          for (var prop in extra) {
+            Vue.util.defineReactive(func, prop, extra[prop])
+          }
 
           // add computed
           if (options.createComputed) {

@@ -49,6 +49,19 @@ describe('vue-async-methods custom options', function() {
     expect(create).to.throw(/Computed name for method fetch is empty/)
   })
 
+  describe('direct call', function() {
+    var article = {}
+    beforeEach(function() {
+      var call = vm.fetchArticle()
+      resolvePromise(article)
+      return call
+    })
+
+    it('updates the computed', function() {
+      expect(vm.article).to.equal(article)
+    })
+  })
+
   describe('when it succeds', function() {
     var article = {}
     beforeEach(function() {
@@ -109,7 +122,7 @@ describe('vue-async-methods default options', function() {
   describe('after called', function() {
     var call
     beforeEach(function() {
-      call = vm.fetch.execute()
+      call = vm.fetch()
     })
 
     it('is called', function() {
