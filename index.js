@@ -115,7 +115,6 @@ module.exports = {
     Vue.component('catch-async-error', {
       props: {
         method: {
-          type: Object,
           required: true
         }
       },
