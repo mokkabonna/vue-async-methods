@@ -22,7 +22,7 @@ Vue.use(AsyncMethods [,options])
 
 ### Options
 
-#### createComputed 
+#### createComputed
 
 default `false`, if true: creates computeds that proxies `fetchArticles.resolvedWith` to `articles`
 
@@ -63,7 +63,6 @@ And use the following helper variables in your view:
 ```js
 articles // this is a computed that aliases fetchArticles.resolvedWith
 fetchArticles //call this function to fetch the articles
-fetchArticles.execute // executes the method, legacy support
 fetchArticles.promise // the current or last promise
 fetchArticles.isCalled // false until first called
 fetchArticles.isPending
@@ -88,7 +87,7 @@ It also registers a component called `catch-async-error` that enables you to cat
         {{article.name}}
     </li>
 </ul>
-    
+
 <div v-if="fetchArticles.resolvedWithEmpty">
     There are no articles.
 </div>
