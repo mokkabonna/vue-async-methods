@@ -1,5 +1,4 @@
-# vue-async-methods [![Build Status](https://travis-ci.org/mokkabonna/vue-async-methods.svg?branch=master)](https://travis-ci.org/mokkabonna/vue-async-methods)
-
+# vue-async-methods
 > Vue async methods support
 
 Gives you utility methods for your promise based methods for use in the view. Also catch errors in the view.
@@ -22,7 +21,7 @@ Vue.use(AsyncMethods [,options])
 
 ### Options
 
-#### createComputed 
+#### createComputed
 
 default `false`, if true: creates computeds that proxies `fetchArticles.resolvedWith` to `articles`
 
@@ -88,7 +87,7 @@ It also registers a component called `catch-async-error` that enables you to cat
         {{article.name}}
     </li>
 </ul>
-    
+
 <div v-if="fetchArticles.resolvedWithEmpty">
     There are no articles.
 </div>
