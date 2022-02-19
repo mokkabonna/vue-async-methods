@@ -65,7 +65,7 @@ describe('vue-async-methods custom options', function() {
   describe('when it succeds', function() {
     var article = {}
     beforeEach(function() {
-      var call = vm.fetchArticle.execute()
+      var call = vm.fetchArticle()
       resolvePromise(article)
       return call
     })
@@ -78,7 +78,7 @@ describe('vue-async-methods custom options', function() {
   describe('when it fail', function() {
     var error = new Error('fail')
     beforeEach(function() {
-      var call = vm.fetchArticle.execute(1, 2, 3)
+      var call = vm.fetchArticle(1, 2, 3)
       rejectPromise(error)
       return call.catch(function () {})
     })
@@ -101,10 +101,6 @@ describe('vue-async-methods default options', function() {
         fetch: fetch
       }
     })
-  })
-
-  it('creates the method object on the vm', function() {
-    expect(vm.fetch.execute).to.be.a('function')
   })
 
   it('exposes the initial state', function() {

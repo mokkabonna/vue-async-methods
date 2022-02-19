@@ -171,7 +171,6 @@ module.exports = {
           Vue.util.defineReactive(this, key, func)
 
           var extra = {
-            execute: func,
             promise: null,
             isCalled: false,
             isPending: false,

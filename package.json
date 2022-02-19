@@ -13,7 +13,8 @@
     "node": ">=4"
   },
   "scripts": {
-    "test": "eslint . && mocha test"
+    "test": "eslint . && mocha test",
+    "develop": "mocha test --watch"
   },
   "files": [
     "index.js"

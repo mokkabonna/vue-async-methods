@@ -62,7 +62,6 @@ And use the following helper variables in your view:
 ```js
 articles // this is a computed that aliases fetchArticles.resolvedWith
 fetchArticles //call this function to fetch the articles
-fetchArticles.execute // executes the method, legacy support
 fetchArticles.promise // the current or last promise
 fetchArticles.isCalled // false until first called
 fetchArticles.isPending
